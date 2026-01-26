@@ -12,9 +12,25 @@ La fonction doit retourner un objet contenant ces trois propriétés :
     - estConnecte (boolean)
 */
 
-function createUser() {
-    
+function createUser(nom, age, estConnecte) {
+
+    const name = typeof nom === 'string' && nom.trim() !== ''
+    const oldConversion = Number(age)
+    const old = !isNaN (oldConversion) && oldConversion >=0
+    typeof estConnecte === 'boolean'
+
+    return{
+        nom,
+        age : old ? oldConversion : 0,
+        estConnecte : name && old 
+    }
 }
+const user = [createUser("John", 30, true),createUser("", 0, false),createUser("Alice", "25", "true")]
+
+console.log(user[0])
+console.log(user[1])
+console.log(user[2])
+
 
 module.exports = {
     createUser,
