@@ -22,10 +22,60 @@ const baseDeDonnees = [];
 
 function signUp(nom, email, password, confirmPassword) {
 	
+    // Vérifier si l'email existe déjà
+    for (let i = 0; i < baseDeDonnees.length; i++) {
+        if (baseDeDonnees[i].email === email) {
+          return "Erreur : cet email existe déjà";
+        }
+      }
+    
+      // Vérifier si les mots de passe sont identiques
+      if (password !== confirmPassword) {
+        return "Erreur : les mots de passe ne correspondent pas";
+      }
+    
+      // Créer un nouvel utilisateur
+      let nouvelUtilisateur = {
+        id: baseDeDonnees.length + 1, // id unique simple
+        nom: nom,
+        email: email,
+        password: password,
+        estConnecte: false,
+        estBloque: false
+      };
+    
+      // Ajouter l'utilisateur à la base de données
+      baseDeDonnees.push(nouvelUtilisateur);
+    
+      return nouvelUtilisateur;
 }
 
-function login() {
-	
+function login(email, password) {
+
+    // Rechercher l'utilisateur
+    for (let i = 0; i < baseDeDonnees.length; i++) {
+        let utilisateur = baseDeDonnees[i];
+    
+        if (utilisateur.email === email) {
+    
+          // Vérifier si le mot de passe est correct
+          if (utilisateur.password !== password) {
+            return "Erreur : mot de passe incorrect";
+          }
+    
+          // Vérifier si l'utilisateur est bloqué
+          if (utilisateur.estBloque === true) {
+            return "Erreur : utilisateur bloqué";
+          }
+    
+          // Connecter l'utilisateur
+          utilisateur.estConnecte = true;
+          return utilisateur;
+        }
+      }
+    
+      return "Erreur : utilisateur non trouvé";	
 }
 
 module.exports = { baseDeDonnees, signUp, login };
+
